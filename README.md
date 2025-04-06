@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator App</title>
+
+</head>
+<body>
+    <style>
+         {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.calculator {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.display {
+    width: 100%;
+    height: 40px;
+    text-align: right;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.btn {
+    padding: 20px;
+    font-size: 1.2em;
+    background-color: #f2f2f2;
+    border: none;
+ border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn:hover {
+    background-color: #ddd;
+}
+
+.btn:active {
+    background-color: #bbb;
+}
+    </style>
+    <div class="calculator">
+        <input type="text" id="display" class="display" disabled aria-live="polite" aria-label="Display Area"/>
+        <div class="buttons">
+            <button class="btn" onclick="appendNumber('7')" aria-label="7">7</button>
+            <button class="btn" onclick="appendNumber('8')" aria-label="8">8</button>
+            <button class="btn" onclick="appendNumber('9')" aria-label="9">9</button>
+            <button class="btn" onclick="setOperation('+')" aria-label="Addition">+</button>
+
+            <button class="btn" onclick="appendNumber('4')" aria-label="4">4</button>
+            <button class="btn" onclick="appendNumber('5')" aria-label="5">5</button>
+            <button class="btn" onclick="appendNumber('6')" aria-label="6">6</button>
+            <button class="btn" onclick="setOperation('-')" aria-label="Subtraction">-</button>
+
+            <button class="btn" onclick="appendNumber('1')" aria-label="1">1</button>
+            <button class="btn" onclick="appendNumber('2')" aria-label="2">2</button>
+            <button class="btn" onclick="appendNumber('3')" aria-label="3">3</button>
+            <button class="btn" onclick="setOperation('')" aria-label="Multiplication">&times;</button>
+
+            <button class="btn" onclick="appendNumber('0')" aria-label="0">0</button>
+            <button class="btn" onclick="clearDisplay()" aria-label="Clear">C</button>
+            <button class="btn" onclick="computeResult()" aria-label="Equals">=</button>
+            <button class="btn" onclick="setOperation('/')" aria-label="Division">/</button>
+
+            
+        </div>
+    </div>
+    
+    <script>
+        let currentInput = '';
+let currentOperation = null;
+let firstOperand = null;
+
+function appendNumber(number) {
+    currentInput += number;
+    document.getElementById('display').value = currentInput;
+}
+
+function setOperation(operation) {
+    if (currentInput === '') return;
+    
+    if (firstOperand !== null) {
+        computeResult();
+    }
+    
+    currentOperation = operation;
+    firstOperand = currentInput;
+    currentInput = '';
+}
+function clearDisplay() {
+    currentInput = '';
+    firstOperand = null;
+    currentOperation = null;
+    document.getElementById('display').value = '';
+}
+
+function computeResult() {
+    if (currentInput === '' || firstOperand === null || currentOperation === null) return;
+    
+    let result;
+    const num1 = parseFloat(firstOperand);
+    const num2 = parseFloat(currentInput);
+    
+    switch (currentOperation) {
+        case '+':
+            result = num1 + num2;
+            break;
+        case '-':
+            result = num1 - num2;
+            break;
+        case '*':
+            result = num1 * num2; // Fixed multiplication issue
+            break;
+        case '/':
+            if (num2 === 0) {
+                result = 'Error';
+            } else {
+                result = num1 / num2;
+            }
+            break;
+    }
+
+    currentInput = result.toString();
+    firstOperand = null;
+    currentOperation = null;
+    document.getElementById('display').value = currentInput;
+}
+
+
+    </script>
+</body>
+</html>
+
+
+
